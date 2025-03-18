@@ -58,25 +58,31 @@ let rec zap_tree_rand tree n =
     | _ -> let tree1 = add_el_tree tree x
            zap_tree_rand tree1 (n - 1)
 
+
+let fun1 x = 
+    round(x)
+
 // задание 1
-let rec tree_map tree tree_new = 
+let rec tree_map f1 tree tree_new = 
     match tree with
     | Node (data, left, right)
-        -> let x = round(data)
+        -> let x = f1 data 
            let t = add_el_tree tree_new x
-           let t1 = tree_map left t
-           tree_map right t1
+           let t1 = tree_map f1 left t
+           tree_map f1 right t1
     | Empty -> tree_new
 
 
+let fun2 x y z = 
+    if x = y then z + 1
+    else z
+
 // задание 2
-let rec tree_fold tree el = 
+let rec tree_fold f2 tree el = 
     match tree with
     | Node (data, left, right)
-        -> if data = el then 
-               1 + (tree_fold left el) + (tree_fold right el)
-           else
-               (tree_fold left el) + (tree_fold right el)
+        -> let x = f2 data el 0
+           x + (tree_fold f2 left el) + (tree_fold f2 right el)
     | Empty -> 0
 
 let a = ""
@@ -107,7 +113,7 @@ let rec fuuuuuu () =
         let li = get_tree ()
         printTree li 0
         printfn $"{a}"
-        let li1 = tree_map li Empty
+        let li1 = tree_map fun1 li Empty
         printfn $"{a}"
         printfn $"{a}"
         printTree li1 0
@@ -117,7 +123,7 @@ let rec fuuuuuu () =
         printTree li 0
         let c = vvod_znach_f("Введите значение искомого элемента").Value
         printfn $"{a}"
-        let li1 = tree_fold li c
+        let li1 = tree_fold fun2 li c
         printfn "%d" li1
         printfn $"{a}"
         printfn $"{a}"
